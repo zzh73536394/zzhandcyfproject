@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <title>网易云后台管理</title>
+
+
+    <script src="/js2/jquery.min.js"></script>
+    <script src="/js2/layui/layui.js"></script>
+    <link rel="stylesheet" href="/js2/layui/css/layui.css">
+
+
+
+</head>
+
+<body class="layui-layout-body">
+<div class="layui-layout layui-layout-admin">
+    <div class="layui-header">
+        <div class="layui-bg-blue">
+            <img width="188" height="55" class="f-fl img" alt="网易" src="//edu-image.nosdn.127.net/51373455cc3e4a96a802e89387cb868c.png?imageView&amp;quality=100">
+        </div>
+        <!-- 头部区域（可配合layui已有的水平导航） -->
+        <ul class="layui-nav layui-layout-left">
+            <li class="layui-nav-item"><a href="">控制台</a></li>
+            <li class="layui-nav-item"><a href="">商品管理</a></li>
+            <li class="layui-nav-item"><a href="">用户</a></li>
+            <li class="layui-nav-item">
+                <a href="javascript:;">其它系统</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">邮件管理</a></dd>
+                    <dd><a href="">消息管理</a></dd>
+                    <dd><a href="">授权管理</a></dd>
+                </dl>
+            </li>
+        </ul>
+        <ul class="layui-nav layui-layout-right">
+            <li class="layui-nav-item">
+                <a href="javascript:;">
+
+                </a>
+                <dl class="layui-nav-child">
+                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="">安全设置</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item"><a href="javaScript:zhuXiao()">退了</a></li>
+        </ul>
+    </div>
+
+    <
+    <div class="layui-side layui-bg-black">
+        <div class="layui-side-scroll">
+            <!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+            <ul class="layui-nav layui-nav-tree" lay-filter="test">
+
+                <li class="layui-nav-item layui-nav-itemed">
+
+                    <div id="demo"></div>
+                </li>
+
+            </ul>
+        </div>
+
+    </div>
+    <div class="layui-body">
+        <div class="layui-tab"  lay-allowClose="true" lay-filter="deom" >
+            <ul class="layui-tab-title" id="deom">
+                <li class="layui-this">首页</li>
+            </ul>
+            <div class="layui-tab-content" style="height: 600px">
+                <div class="layui-tab-item">
+
+                    <div style="clear: both;margin-top: 30px">
+                        <table class="layui-hide" id="test" style="height: 600px"></table>
+                    </div>
+                </div>
+
+
+
+
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="layui-footer">
+    <!-- 底部固定区域 -->
+    © layui.com - 底部固定区域
+</div>
+
+</body>
+<script type="text/javascript" th:inline="none">
+    function zhuXiao(){
+        location.href="/logout";
+    }
+
+    var element =null;
+    var layer = null;
+    $(function () {
+
+        layui.use(['element','layer'], function () {
+            element = layui.element;
+            layer = layui.layer;
+        });
+
+        $.ajax({
+            url: "/getTreeAll",
+            type: "post",
+            success: function (data) {
+                layui.use('tree', function () {
+                    layui.tree({
+                        elem: '#demo' //指定元素
+                        //,check: 'checkbox' //勾选风格
+                        , skin: 'as' //设定皮肤
+                        ,target: '_self' //是否新选项卡打开（比如节点返回href才有效）
+                        , drag: true
+                        , click: function (item) { //点击节点回调
+                            console.log(item)
+
+
+                            if(item.children!=null&&item.children.length==0){
+                                var  a =     document.getElementById("deom").innerText;
+                                //a+="qqqq";
+                                var flag;
+                                if (a.indexOf(item.name)>-1) {
+                                    flag=true;
+                                }else{
+                                    flag=false;
+                                }
+                                if (flag){
+                                    active.tabChange(item.id);
+
+                                }else{
+                                    active.tabAdd(item.hrefURL,item.id,item.name);
+                                }
+                                // alert(b.contains(item.name));
+
+                                /*element.tabAdd("deom", {
+                                    title: item.name
+                                    , content: '<h1>123123</h1>' //支持传入html
+                                    , id: item.id
+                                });*/
+
+                            }
+                        }, nodes: data,
+                    });
+                });
+                $("li>i").remove()
+            }, error: function () {
+
+            }
+        })
+        var active = {
+            //在这里给active绑定几项事件，后面可通过active调用这些事件
+            tabAdd: function(url,id,name) {
+                //新增一个Tab项 传入三个参数，分别对应其标题，tab页面的地址，还有一个规定的id，是标签中data-id的属性值
+                //关于tabAdd的方法所传入的参数可看layui的开发文档中基础方法部分
+                element.tabAdd('deom', {
+                    title: name,
+                    content: '<iframe data-frameid="'+id+'" scrolling="no" frameborder="0" src="'+url+'" style="width:100%;height: 70%"></iframe>',
+                    id: id //规定好的id
+                })
+                element.render('tab');
+                $(".layui-tab-item").css("height","300%")
+            },
+            tabChange: function(id) {
+                //切换到指定Tab项
+                element.tabChange('deom', id); //根据传入的id传入到指定的tab项
+            },
+            tabDelete: function (id) {
+                element.tabDelete("deom", id);//删除
+            }
+            , tabDeleteAll: function (ids) {//删除所有
+                $.each(ids, function (i,item) {
+                    element.tabDelete("deom", item); //ids是一个数组，里面存放了多个id，调用tabDelete方法分别删除
+                })
+            }
+        };
+    })
+
+
+</script>
+
+
+
+
+
+</html>
