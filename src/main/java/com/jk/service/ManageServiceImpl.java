@@ -1,11 +1,13 @@
-package com.jk.managementsystem.service;
+package com.jk.service;
 
 
-import com.jk.managementsystem.bean.MenuTree;
-import com.jk.managementsystem.dao.ManageMapper;
+import com.jk.bean.MenuTree;
+import com.jk.bean.Teacher;
+import com.jk.dao.ManageMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -24,5 +26,16 @@ public class ManageServiceImpl implements ManageService{
     public List<MenuTree> getTreeAll() {
         List<MenuTree> list = manageMapper.getTreeAll();
         return list;
+    }
+
+    @Override
+    public HashMap<String, Object> getTeacher(Integer page, Integer limit) {
+        long count = manageMapper.getTeacher();
+        List<Teacher> list = manageMapper.getTeacherAll((page-1)*limit,limit);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("count",count);
+        hashMap.put("data",list);
+        hashMap.put("code",0);
+        return hashMap;
     }
 }

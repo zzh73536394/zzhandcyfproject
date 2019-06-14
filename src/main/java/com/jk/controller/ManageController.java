@@ -1,14 +1,16 @@
-package com.jk.managementsystem.controller;
+package com.jk.controller;
 
 
-import com.jk.managementsystem.bean.MenuTree;
-import com.jk.managementsystem.service.ManageService;
-import com.jk.managementsystem.utils.TreeNoteUtil;
+import com.jk.bean.MenuTree;
+import com.jk.bean.Teacher;
+import com.jk.service.ManageService;
+import com.jk.util.TreeNoteUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -32,16 +34,21 @@ public class ManageController {
     public List<MenuTree> getTreeAll(){
 
         List<MenuTree> list = manageService.getTreeAll();
-
+        System.out.println("222");
         list =  TreeNoteUtil.getFatherNode(list);
 
         return list;
     }
 
-
-    /*@RequestMapping("getTree")
+    /**
+     * 教师注册审核
+     */
+    @RequestMapping("getTeacher")
     @ResponseBody
-    public List<LinkedHashMap<String, Object>> getTree() {
-        return manageService.getTree();
-    }*/
+    public HashMap<String, Object> getTeacher(Integer page, Integer limit){
+        HashMap<String, Object> list = manageService.getTeacher(page,limit);
+        return list;
+    }
+
+
 }

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+
+<meta>
+<meta charset="UTF-8"></meta>
+<title>Title</title>
+
+<link rel="stylesheet" href="/js2/layui/css/layui.css" media="all">
+
+</head>
+<body>
+<table id="demo" lay-filter="test"></table>
+<script src="/js2/layui/layui.js"></script>
+</body>
+<script th:inline="none">
+
+    layui.use('table', function () {
+        var table = layui.table;
+
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , height: 312
+            , url: '/getTeacher' //数据接口
+            , page: true //开启分页
+            , cols: [[ //表头
+                {field: 'id', title: 'ID', width: 80,  fixed: 'left'}
+                , {field: 'teacherAccount', title: '老师账号', width: 100}
+                , {field: 'teacherName', title: '老师名称', width: 100}
+                , {field: 'teacherPhone', title: '老师手机号', width: 150}
+                , {field: 'jieshao', title: '介绍', width: 177}
+                , {field: 'teacherInfo', title: '简介', width: 177}
+                , {field: 'chec', title: '审核',
+                    templet: function(d){
+                        if (chec == 1) {return "未审核"}
+                        if (chec == 2) {return "已审核"}
+                    },
+                    width: 100}
+            ]],
+            /*id: 'testReload',*/
+            skin: 'row', //表格风格
+            even: true, //隔行背景
+            page: true, //是否显示分页
+            limits: [2, 5, 10], //显示
+            limit: 2, //每页默认显示的数量
+            request: {
+                page: 'pageNo', //页码的参数名称，默认：page
+                limit: 'pageSize' //每页数据量的参数名，默认：limit
+            }
+        });
+
+    });
+</script>
+</html>

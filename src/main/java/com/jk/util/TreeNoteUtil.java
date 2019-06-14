@@ -1,8 +1,8 @@
-package com.jk.managementsystem.utils;
+package com.jk.util;
 
 
 
-import com.jk.managementsystem.bean.MenuTree;
+import com.jk.bean.MenuTree;
 
 import java.util.ArrayList;
 import java.util.HashMap;

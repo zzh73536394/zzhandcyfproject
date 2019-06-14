@@ -1,4 +1,4 @@
-package com.jk.managementsystem.bean;
+package com.jk.bean;
 
 import java.io.Serializable;
 import java.util.HashMap;

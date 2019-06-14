@@ -1,4 +1,4 @@
-package com.jk.managementsystem;
+package com.jk;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
