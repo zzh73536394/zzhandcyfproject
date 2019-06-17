@@ -15,4 +15,8 @@ public interface ManageService {
     List<MenuTree> getTreeAll();
 
     HashMap<String, Object> getTeacher(Integer page, Integer limit);
+
+    Teacher getTeacherById(Integer id);
+
+    void updateTeachcerStart(Integer id, Integer chec);
 }

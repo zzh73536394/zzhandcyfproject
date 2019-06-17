@@ -38,4 +38,14 @@ public class ManageServiceImpl implements ManageService{
         hashMap.put("code",0);
         return hashMap;
     }
+
+    @Override
+    public Teacher getTeacherById(Integer id) {
+        return manageMapper.getTeacherById(id);
+    }
+
+    @Override
+    public void updateTeachcerStart(Integer id, Integer chec) {
+        manageMapper.updateTeachcerStart(id,chec);
+    }
 }

@@ -28,4 +28,6 @@ public class Teacher {
     private Integer chec;
 
     private String companyLogo;
+
+    private String errorMsg;
 }
