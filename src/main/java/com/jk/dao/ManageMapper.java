@@ -1,5 +1,6 @@
 package com.jk.dao;
 
+import com.jk.bean.Inst;
 import com.jk.bean.MenuTree;
 import com.jk.bean.Teacher;
 import org.apache.ibatis.annotations.Param;
@@ -23,4 +24,12 @@ public interface ManageMapper {
     Teacher getTeacherById(@Param("id") Integer id);
     @Update("update t_teacher set chec = #{chec} where id = #{id}")
     void updateTeachcerStart(@Param("id") Integer id, @Param("chec") Integer chec);
+    @Select("select count(*) from t_institutions")
+    long getInst();
+
+    List<Inst> getInstAll(@Param("page") Integer page,@Param("limit") Integer limit);
+    @Select("select * from t_institutions where id = #{id}")
+    Inst getInstById(@Param("id") Integer id);
+    @Update("update t_institutions set start = #{start} where id = #{id}")
+    void updateInstStart(@Param("id") Integer id,@Param("start") Integer start);
 }

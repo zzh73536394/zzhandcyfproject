@@ -21,6 +21,11 @@
     </properties>
 
     <dependencies>
+        <!--邮件发送核心包-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
         <!--httpClient-->
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>

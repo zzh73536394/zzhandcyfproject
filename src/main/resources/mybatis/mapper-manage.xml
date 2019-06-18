@@ -24,5 +24,22 @@
         order by tt.chec
         limit #{page},#{limit}
     </select>
+    <select id="getInstAll" resultType="com.jk.bean.Inst">
+        SELECT
+            ti.id,
+            ti.account,
+            ti.instName,
+            ti.email,
+            ti.instInfo,
+            ti.information,
+            ti.`start`
+        FROM
+            t_institutions ti
+        WHERE
+            1 = 1
+        ORDER BY
+            ti.`start`
+            limit #{page},#{limit}
+    </select>
 
 </mapper>

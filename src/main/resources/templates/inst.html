@@ -25,27 +25,27 @@
         table.render({
             elem: '#demo'
             , height: 312
-            , url: '/getTeacher' //数据接口
+            , url: '/getInst' //数据接口
             , page: true //开启分页
             , cols: [[ //表头
                 {field: 'id', title: 'ID', width: 80,  fixed: 'left'}
-                , {field: 'teacherAccount', title: '老师账号', width: 100}
-                , {field: 'teacherName', title: '老师名称', width: 100}
-                , {field: 'teacherPhone', title: '老师手机号', width: 150}
-                , {field: 'jieshao', title: '介绍', width: 177}
-                , {field: 'teacherInfo', title: '简介', width: 177}
-                , {field: 'chec', title: '审核',
+                , {field: 'account', title: '机构账号', width: 100}
+                , {field: 'instName', title: '机构名称', width: 100}
+                , {field: 'email', title: '机构邮箱', width: 150}
+                , {field: 'instInfo', title: '机构简介', width: 177}
+                , {field: 'information', title: '机构详情', width: 177}
+                , {field: 'start', title: '审核',
                     templet: function(obj){
-                        if (obj.chec == 1) {return '<font  class="layui-bg-orange"">未审核</font>';}
-                        if (obj.chec == 2) {return '<font class="layui-bg-green">审核通过</font>';}
-                        if (obj.chec == 3) {return '<font class="layui-bg-red">审核未通过</font>';}
+                        if (obj.start == 1) {return '<font  class="layui-bg-orange"">未审核</font>';}
+                        if (obj.start == 2) {return '<font class="layui-bg-green">审核通过</font>';}
+                        if (obj.start == 3) {return '<font class="layui-bg-red">审核未通过</font>';}
                     },
                     width: 100}
                 , {field: 'xxx', title: '操作',
                     templet: function(obj){
-                        if (obj.chec == 1) {return '<button type="button" class="layui-btn layui-btn-sm layui-btn-warm"><a href="javaScript:audit('+obj.id+')">待审核</a></button>';}
-                        if (obj.chec == 2) {return '<button type="button" class="layui-btn layui-btn-sm"><a href="javaScript:tongGuo()">审核通过</a></button>';}
-                        if (obj.chec == 3) {return '<button type="button" class="layui-btn layui-btn-sm layui-btn-danger"><a href="javaScript:audit('+obj.id+')">从新审核</a></button>';}
+                        if (obj.start == 1) {return '<button type="button" class="layui-btn layui-btn-sm layui-btn-warm"><a href="javaScript:audit('+obj.id+')">待审核</a></button>';}
+                        if (obj.start == 2) {return '<button type="button" class="layui-btn layui-btn-sm"><a href="javaScript:tongGuo()">审核通过</a></button>';}
+                        if (obj.start == 3) {return '<button type="button" class="layui-btn layui-btn-sm layui-btn-danger"><a href="javaScript:audit('+obj.id+')">从新审核</a></button>';}
                     },
                     width: 120}
             ]],
@@ -69,7 +69,7 @@
             content: '<div id="div"></div>'
         });
         $.ajax({
-            url:'getTeacherById',
+            url:'getInstById',
             data:{id:id},
             success:function (data) {
                 var html = '<form class="layui-form" id="form">\n' +
@@ -77,34 +77,30 @@
                     '  <div class="layui-form-item">\n' +
                     '    <label class="layui-form-label">账号</label>\n' +
                     '    <div class="layui-input-inline">\n' +
-                    '      <input type="text" name="teacherAccount" value="'+data.teacherAccount+'" readonly  lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
+                    '      <input type="text" name="account" value="'+data.account+'" readonly  lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
                     '    </div>\n' +
                     '  </div>\n' +
                     '  <div class="layui-form-item">\n' +
-                    '    <label class="layui-form-label">名称</label>\n' +
+                    '    <label class="layui-form-label">机构名称</label>\n' +
                     '    <div class="layui-input-inline">\n' +
-                    '      <input type="text" name="teacherName" value="'+data.teacherName+'" readonly lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
+                    '      <input type="text" name="instName" value="'+data.instName+'" readonly lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
                     '    </div>\n' +
                     '  <div class="layui-form-item">\n' +
-                    '    <label class="layui-form-label">手机号码</label>\n' +
+                    '    <label class="layui-form-label">机构邮箱</label>\n' +
                     '    <div class="layui-input-inline">\n' +
-                    '      <input type="text" name="teacherPhone" value="'+data.teacherPhone+'" readonly lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
+                    '      <input type="text" name="email" value="'+data.email+'" readonly lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
                     '    </div>\n' +
                     '  <div class="layui-form-item">\n' +
-                    '    <label class="layui-form-label">专业</label>\n' +
+                    '    <label class="layui-form-label">机构介绍</label>\n' +
                     '    <div class="layui-input-inline">\n' +
-                    '      <input type="text" name="zy" value="'+data.zy+'" readonly lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
-                    '    </div>\n' +
-                    '  <div class="layui-form-item">\n' +
-                    '    <label class="layui-form-label">课程介绍</label>\n' +
-                    '    <div class="layui-input-inline">\n' +
-                    '      <input type="text" name="jieshao" value="'+data.jieshao+'" readonly lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
+                    '      <input type="text" name="instInfo" value="'+data.instInfo+'" readonly lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
                     '    </div>\n' +
 
+
                     '  <div class="layui-form-item layui-form-text">\n' +
-                    '    <label class="layui-form-label">个人简介</label>\n' +
+                    '    <label class="layui-form-label">机构介绍</label>\n' +
                     '    <div class="layui-input-block">\n' +
-                    '      <textarea name="teacherInfo"  placeholder="请输入内容" readonly lay-verify="readonly" class="layui-textarea">'+data.teacherInfo+'</textarea>\n' +
+                    '      <textarea name="information"  placeholder="请输入内容" readonly lay-verify="readonly" class="layui-textarea">'+data.information+'</textarea>\n' +
                     '    </div>\n' +
                     '  </div>\n' +
                     '    <span id="span">' +
@@ -153,20 +149,22 @@
    * */
     function updataStart(start) {
         $.ajax({
-            url:'/updateTeacherStart?chec='+start,
+            url:'/updateInstStart?start='+start,
             type:'post',
             data:$("#form").serialize(),
             success:function (data) {
                 layer.closeAll();
                 layer.msg("操作成功");
                 parent.location.reload();
-
                 $.ajax({
-                    url:'/sendTeacherStart?chec='+start,
+                    url:'/sendInstStart?start='+start,
                     type:'post',
                     data:$("#form").serialize(),
                     success:function (data) {
+
                         layer.msg("邮件发送成功");
+
+
                     },
                     error:function () {
                         layer.msg("邮件发送失败");
