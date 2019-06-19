@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入jquery -->
+    <script type="text/javascript" src="/js2/jquery-1.9.1.min.js"></script>
+    <script src="/js2/layui/layui.js"></script>
+    <link rel="stylesheet" href="/js2/layui/css/layui.css">
+    <!-- 引入bootstrap的css、js -->
+    <link rel="stylesheet" href="/js2/js3/bootstrap3/css/bootstrap.css">
+    <script type="text/javascript" src="/js2/js3/bootstrap3/js/bootstrap.js"></script>
+    <!-- 引入文件上传的css、js -->
+    <link rel="stylesheet" href="/js2/js3/bootstrap-fileinput/css/fileinput.css">
+    <script type="text/javascript" src="/js2/js3/bootstrap-fileinput/js/fileinput.js"></script>
+    <script type="text/javascript" src="/js2/js3/bootstrap-fileinput/js/locales/zh.js"></script>
+    <style type="text/css">
+        .myrow{
+            margin-bottom:10px
+        }
+    </style>
+    <style type="text/css">
+        .layui-table-cell {
+            height: auto;
+            line-height: 20px;
+        }
+    </style>
+</head>
+<body>
+
+
+<div id="add-main" style="display: none;">
+    <form class="layui-form" id="add-form">
+        <div class="layui-form-item center" >
+            <label class="layui-form-label" style="width: 116px" >跳转路径名称</label>
+            <div class="layui-input-block">
+                <input type="text" id="hrefname" name="hrefname" required value="" style="width: 240px"  lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <label class="layui-form-label" style="width: 116px">跳转路径地址</label>
+            <div class="layui-input-block">
+                <input type="text" id="href" name="href" required  style="width: 240px" lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="row myrow" style="margin-left: 5px">
+            <div class="col-md-2">
+                <label for="headImg">Oss路径</label>
+            </div>
+            <div class="col-md-10" >
+                <input type="text" id="testimg" name="url" />
+                <input type="file"  class="projectfile"  name="imgg" id="headImg">
+            </div>
+        </div>
+        <input type="hidden" id="id" name="id">
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="adduser()">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary" id="closeBtn" >重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+
+<table id="zhuTable"></table>
+</body>
+
+<script>
+    $(function () {
+        uploadImg();
+    })
+    function uploadImg(url){
+        $('#headImg').fileinput({
+            language: 'zh', //设置语言
+            uploadUrl: '/max/updaloadImg', //上传的地址
+            allowedFileExtensions: ['jpg', 'gif', 'png'],//接收的文件后缀
+            showUpload: true, //是否显示上传按钮
+            showCaption: false,//是否显示标题
+            browseClass: "btn btn-primary", //按钮样式
+            dropZoneEnabled: false,//是否显示拖拽区域
+            //minImageWidth: 50, //图片的最小宽度
+            //minImageHeight: 50,//图片的最小高度
+            //maxImageWidth: 1000,//图片的最大宽度
+            //maxImageHeight: 1000,//图片的最大高度
+            maxFileSize: 0,//单位为kb，如果为0表示不限制文件大小
+            //minFileCount: 0,
+            maxFileCount: 2, //表示允许同时上传的最大文件个数
+            enctype: 'multipart/form-data',
+            validateInitialCount:true,
+            previewFileIcon: "<i class='glyphicon glyphicon-king'></i>",
+            msgFilesTooMany: "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
+
+        }).on('fileuploaded', function(event, data, previewId, index) {
+            var imgval = $('#testimg').val();
+
+            if(imgval == null || imgval == "" || imgval == undefined){
+                imgval = data.response.responseText;
+            }/*else{
+			imgval += ","+"http://<%= request.getServerName()%>:<%=request.getServerPort()%><%=request.getContextPath()%>/"+data.response;
+		}*/
+            $('#testimg').val(imgval);
+        });
+    }
+</script>
+
+<script type="text/html" id="toolbarDemo">
+
+    <div class="layui-btn-group">
+        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm" onclick="log()">
+            <i class="layui-icon">&#xe654;</i>
+        </button>
+        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm">
+            <i class="layui-icon">&#xe642;</i>
+        </button>
+        <button type="button" class="layui-btn layui-btn-primary layui-btn-sm">
+            <i class="layui-icon">&#xe640;</i>
+        </button>
+    </div>
+</script>
+<script th:inline="none">
+
+    $(function () {
+        init();
+    })
+
+
+
+    function init() {
+        layui.use('table', function () {
+            var table = layui.table;
+            table.render({
+                elem: '#zhuTable',
+                dataType: 'json',
+                url: '/max/findoss',
+                toolbar: '#toolbarDemo',
+                cellMinWidth: 80, //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                cols: [[
+                    {field: 'id', title: 'ID', sort: true},
+                    {field: 'hrefname', title: '跳转地址'},
+                    {field:'url',title:'图片',templet:function(d){
+                            return"<img src='"+d.url+"' width='150px' height='60px'>";
+                        }},
+                    {field:'xx',title:'操作',templet:function(d){
+                            return "<a class=\"layui-btn layui-btn-primary layui-btn-mini\" lay-event=\"detail\" href=javascript:deleteLunBo('"+d.id+"')>删除</a> " +
+                                " <a class=\"layui-btn layui-btn-primary layui-btn-mini\" lay-event=\"detail\" href=javascript:updateHref('"+d.href+"','"+d.id+"','"+d.hrefname+"')>修改跳转路径</a>";
+                        }},
+                ]],
+                id: 'testReload',
+                skin: 'row', //表格风格
+                even: true, //隔行背景
+                page: true, //是否显示分页
+                limits: [2, 5, 10], //显示
+                limit: 5, //每页默认显示的数量
+                request: {
+                    page: 'pageNo', //页码的参数名称，默认：page
+                    limit: 'pageSize' //每页数据量的参数名，默认：limit
+                }
+
+            });
+        });
+    }
+
+    function deleteLunBo(id){
+        $.ajax({
+            url:"/max/deleteBiaoti",
+            type:"post",
+            data:{"btid":id},
+            success:function (data) {
+                layer.msg('删除成功');
+                $(".layui-laypage-btn")[0].click();
+            },error:function () {
+
+            }
+        });
+    }
+
+    function log() {
+
+            //页面层-自定义
+            layer.open({
+                type: 1,
+                title:"新建配置",
+                closeBtn: false,
+                shift: 2,
+                area: ['800px', '600px'],
+                shadeClose: true,
+                // btn: ['新增', '取消'],
+                // btnAlign: 'c',
+                content: $("#add-main")
+
+            });
+    }
+
+    function updateHref(href,id,hrefname) {
+
+            $("#href").val(href),
+            $("#id").val(id),
+                $("#hrefname").val(hrefname)
+        //页面层-自定义
+        layer.open({
+            type: 1,
+            title:"新建配置",
+            closeBtn: false,
+            shift: 2,
+            area: ['800px', '600px'],
+            shadeClose: true,
+            // btn: ['新增', '取消'],
+            // btnAlign: 'c',
+            content: $("#add-main")
+
+        });
+    }
+    
+    function adduser() {
+
+        $.ajax({
+            url:"/max/adduser",
+            type:'post',
+            dataType: 'json',
+            data:$("#add-form").serialize(),
+            success : function (result) {
+                alert("成功")
+                $(".layui-laypage-btn")[0].click();
+            },error : function () {
+
+            }
+
+        })
+    }
+</script>
+
+
+</html>

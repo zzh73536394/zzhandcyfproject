@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.jk.dao.ZzhMapper">
+    <resultMap id="userMap" type="com.jk.bean.UserBean">
+        <id property="id" column="id"/>
+        <result property="name" column="name"/>
+        <result property="password" column="password"/>
+
+        <collection property="roles" ofType="com.jk.bean.RoleBean">
+            <id property="id" column="roleId"/>
+            <result property="name" column="roleName"/>
+
+            <collection property="permissions" ofType="com.jk.bean.PermissionBean">
+                <id property="id" column="permissionId"/>
+                <result property="name" column="permissionName"/>
+                <result property="url" column="permissionUrl"/>
+            </collection>
+
+        </collection>
+    </resultMap>
+
+    <insert id="addLunbo">
+        insert into t_oss(url,href,hrefname,status) values(#{url},#{href},#{hrefname},0)
+    </insert>
+
+    <select id="findById" parameterType="int" resultMap="userMap">
+        SELECT user.id, user.name, user.password,
+			role.id as roleId, role.name as roleName,
+			permission.id as permissionId,
+            permission.name as permissionName,
+            permission.url as permissionUrl
+        FROM user, user_role, role, role_permission, permission
+          WHERE user.id = #{id}
+            AND user.id = user_role.user_id
+            AND user_role.role_id = role.id
+            AND role.id = role_permission.role_id
+            AND role_permission.permission_id = permission.id
+    </select>
+
+    <select id="findkecheng" resultType="java.util.HashMap">
+        select * from t_video tv inner join t_teacher tt on tv.teacherId=tt.id limit #{start},#{limit}
+    </select>
+
+</mapper>

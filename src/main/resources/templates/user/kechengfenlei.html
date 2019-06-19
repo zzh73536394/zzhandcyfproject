@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入jquery -->
+    <script type="text/javascript" src="/js2/jquery-1.9.1.min.js"></script>
+    <script src="/js2/layui/layui.js"></script>
+    <link rel="stylesheet" href="/js2/layui/css/layui.css">
+</head>
+<body>
+<div id="add-main" style="display: none;">
+    <form class="layui-form" id="add-form">
+        <div class="layui-form-item center" >
+            <label class="layui-form-label" style="width: 116px" >课程名称</label>
+            <div class="layui-input-block">
+                <input type="text" id="videoName" name="videoName" required value="" style="width: 240px"  lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item center" >
+            <label class="layui-form-label" style="width: 116px" >教师名称</label>
+            <div class="layui-input-block">
+                <input type="text" id="teacherName" name="teacherName" required value="" style="width: 240px"  lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <div class="layui-form-item center" >
+            <label class="layui-form-label" style="width: 116px" >所属分类</label>
+            <div class="layui-input-block">
+                <input type="text" id="kechengfenlei" name="kechengfenlei" required value="" style="width: 240px"  lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+            </div>
+        </div>
+        <input type="hidden" id="id" name="id">
+        <div class="layui-form-item">
+            <div class="layui-input-block">
+                <button class="layui-btn" onclick="updateuser()">立即提交</button>
+                <button type="reset" class="layui-btn layui-btn-primary" id="closeBtn" >重置</button>
+            </div>
+        </div>
+    </form>
+</div>
+<table id="zhuTable"></table>
+</body>
+<script th:inline="none">
+
+    $(function () {
+        init();
+    })
+
+    function init() {
+        layui.use('table', function () {
+            var table = layui.table;
+            table.render({
+                elem: '#zhuTable',
+                dataType: 'json',
+                url: '/max/findkecheng',
+                toolbar: '#toolbarDemo',
+                cellMinWidth: 80, //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                cols: [[
+                    {field: 'id', title: 'ID', sort: true},
+                    {field: 'videoName', title: '课程名称'},
+                    {field: 'teacherName', title: '教师名称'},
+                    {field: 'videoPrice', title: '课程价格'},
+                    {field: 'videoinfo', title: '课程介绍'},
+                    {field: 'kechengfenlei', title: '课程类型',templet:function(d){
+                           var a= d.kechengfenlei
+                           return '<font  class="layui-bg-red">'+a+'</font>';
+                        }},
+
+                    {field:'xx',title:'操作',templet:function(d){
+                            return "<a class=\"layui-btn layui-btn-primary layui-btn-mini\" lay-event=\"detail\" href=javascript:log('"+d.id+"','"+d.videoName+"','"+d.teacherName+"','"+d.kechengfenlei+"')>修改类型</a> "
+                        }},
+                ]],
+                id: 'testReload',
+                skin: 'row', //表格风格
+                even: true, //隔行背景
+                page: true, //是否显示分页
+                limits: [2, 5, 10], //显示
+                limit: 10, //每页默认显示的数量
+                request: {
+                    page: 'pageNo', //页码的参数名称，默认：page
+                    limit: 'pageSize' //每页数据量的参数名，默认：limit
+                }
+
+            });
+        });
+    }
+
+    function log(id,videoName,teacherName,kechengfenlei) {
+        alert("11")
+        $("#videoName").val(videoName),
+            $("#teacherName").val(teacherName),
+            $("#id").val(id)
+        $("#kechengfenlei").val(kechengfenlei)
+        alert("11")
+        //页面层-自定义
+        layer.open({
+            type: 1,
+            title:"新建配置",
+            closeBtn: false,
+            shift: 2,
+            area: ['800px', '600px'],
+            shadeClose: true,
+            // btn: ['新增', '取消'],
+            // btnAlign: 'c',
+            content: $("#add-main")
+
+        });
+    }
+
+    function updatekechengfenlei() {
+        $.ajax({
+            url: "/max/updatekechengfenlei",
+            type: 'post',
+            dataType: 'json',
+            data: $("#add-form").serialize(),
+            success: function (result) {
+                alert("成功")
+            }, error: function () {
+
+            }
+
+        })
+    }
+
+</script>
+</html>

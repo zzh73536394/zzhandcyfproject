@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>会员中心</title>
+    <!-- 引入jquery -->
+    <script type="text/javascript" src="/js2/jquery-1.9.1.min.js"></script>
+    <script src="/js2/layui/layui.js"></script>
+    <link rel="stylesheet" href="/js2/layui/css/layui.css">
+</head>
+
+<body>
+ <table id="zhuTable"></table>
+</body>
+<script th:inline="none">
+
+    $(function () {
+        init();
+    })
+
+    function init() {
+        layui.use('table', function () {
+            var table = layui.table;
+            table.render({
+                elem: '#zhuTable',
+                dataType: 'json',
+                url: '/max/findyonghu',
+                toolbar: '#toolbarDemo',
+                cellMinWidth: 80, //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                cols: [[
+                    {field: 'id', title: 'ID', sort: true},
+                    {field: 'name', title: '用户'},
+                    {field:'xx',title:'操作',templet:function(d){
+                            return "<a class=\"layui-btn layui-btn-primary layui-btn-mini\" lay-event=\"detail\" href=javascript:deleteyonghu('"+d.id+"')>删除</a> "
+
+                        }},
+                ]],
+                id: 'testReload',
+                skin: 'row', //表格风格
+                even: true, //隔行背景
+                page: true, //是否显示分页
+                limits: [2, 5, 10], //显示
+                limit: 5, //每页默认显示的数量
+                request: {
+                    page: 'pageNo', //页码的参数名称，默认：page
+                    limit: 'pageSize' //每页数据量的参数名，默认：limit
+                }
+
+            });
+        });
+    }
+
+    function deleteyonghu(id) {
+        $.ajax({
+            url:"/max/deleteyonghu",
+            type:"post",
+            data:{"id":id},
+            success:function (data) {
+                layer.msg('删除成功');
+                $(".layui-laypage-btn")[0].click();
+            },error:function () {
+
+            }
+        })
+    }
+
+</script>
+</html>
