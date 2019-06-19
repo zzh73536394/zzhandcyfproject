@@ -91,7 +91,7 @@
                     '      <input type="text" name="email" value="'+data.email+'" readonly lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
                     '    </div>\n' +
                     '  <div class="layui-form-item">\n' +
-                    '    <label class="layui-form-label">机构介绍</label>\n' +
+                    '    <label class="layui-form-label">机构简介</label>\n' +
                     '    <div class="layui-input-inline">\n' +
                     '      <input type="text" name="instInfo" value="'+data.instInfo+'" readonly lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
                     '    </div>\n' +
@@ -155,7 +155,7 @@
             success:function (data) {
                 layer.closeAll();
                 layer.msg("操作成功");
-                parent.location.reload();
+                $(".layui-laypage-btn")[0].click();
                 $.ajax({
                     url:'/sendInstStart?start='+start,
                     type:'post',

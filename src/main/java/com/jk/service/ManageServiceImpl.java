@@ -4,6 +4,7 @@ package com.jk.service;
 import com.jk.bean.Inst;
 import com.jk.bean.MenuTree;
 import com.jk.bean.Teacher;
+import com.jk.bean.Video;
 import com.jk.dao.ManageMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,6 +24,9 @@ public class ManageServiceImpl implements ManageService{
 
     @Autowired
     private ManageMapper manageMapper;
+
+    @Autowired
+    private CreateHtml createHtml;
 
 
     @Value("${spring.mail.username}")
@@ -117,10 +121,58 @@ public class ManageServiceImpl implements ManageService{
 
         String text= "";
         if (chec == 2) {
-            text +="你好"+teacher.getTeacherName()+",您在网易云课堂提交的审核已通过.";
+            text +="你好"+teacher.getTeacherName()+",您在网易云课堂提交的已通过审核.";
         }
         if (chec == 3) {
             text +="你好"+teacher.getTeacherName()+",您在网易云课堂提交的审核因为' "+teacher.getErrorMsg()+" '原因未能通过,请从新提交申请.";
+        }
+
+
+        System.out.println(teacher.getEmail());
+        System.out.println(text);
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom(from);
+        message.setTo(teacher.getEmail());
+        message.setSubject("通知信息");
+        message.setText(text);
+        mailSender.send(message);
+    }
+
+    @Override
+    public HashMap<String, Object> getVideo(Integer page, Integer limit) {
+        long count = manageMapper.getVideo();
+        List<Video> list = manageMapper.getVideoAll((page-1)*limit,limit);
+        HashMap<String, Object> hashMap = new HashMap<>();
+        hashMap.put("count",count);
+        hashMap.put("data",list);
+        hashMap.put("code",0);
+        return hashMap;
+    }
+
+    @Override
+    public Video getVideoById(Integer id) {
+        return manageMapper.getVideoById(id);
+    }
+
+    @Override
+    public void updateVideoStart(Integer id, Integer start) {
+        manageMapper.updateVideoStart(id,start);
+    }
+
+    @Override
+    public void sendVideoStart(Video video, Integer start) {
+
+        Teacher teacher = manageMapper.getTeacherById(video.getTeacherId());
+
+        String text= "";
+        if (start == 2) {
+            text +="你好"+teacher.getTeacherName()+",您在网易云课堂提交的"+video.getVideoName()+"视频已通过审核.";
+
+            Boolean b = createHtml.saveProduct(video.getId());
+            System.out.println(b+"===================");
+        }
+        if (start == 1) {
+            text +="你好"+teacher.getTeacherName()+",您在网易云课堂提交的"+video.getVideoName()+"视频因为' "+video.getErrorMsg()+" '原因未能通过审核,请从新提交申请.";
         }
 
 

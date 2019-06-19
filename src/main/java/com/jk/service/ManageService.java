@@ -5,6 +5,8 @@ package com.jk.service;
 import com.jk.bean.Inst;
 import com.jk.bean.MenuTree;
 import com.jk.bean.Teacher;
+import com.jk.bean.Video;
+import org.springframework.cloud.openfeign.FeignClient;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -30,4 +32,12 @@ public interface ManageService {
     void sendInst(Inst inst, Integer start);
 
     void sendTeacher(Teacher teacher, Integer chec);
+
+    HashMap<String, Object> getVideo(Integer page, Integer limit);
+
+    Video getVideoById(Integer id);
+
+    void updateVideoStart(Integer id, Integer start);
+
+    void sendVideoStart(Video video, Integer start);
 }

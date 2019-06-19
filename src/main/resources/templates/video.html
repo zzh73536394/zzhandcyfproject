@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+
+
+
+<meta>
+<meta charset="UTF-8"></meta>
+<title>Title</title>
+
+<script src="/js2/layui/layui.js"></script>
+<script src="/js2/jquery.min.js"></script>
+<link rel="stylesheet" href="/js2/layui/css/layui.css" media="all">
+
+</head>
+<body>
+<table id="demo" lay-filter="test"></table>
+
+</body>
+<script th:inline="none">
+
+    layui.use('table', function () {
+        var table = layui.table;
+
+        //第一个实例
+        table.render({
+            elem: '#demo'
+            , height: 312
+            , url: '/getVideo' //数据接口
+            , page: true //开启分页
+            , cols: [[ //表头
+                {field: 'id', title: 'ID', width: 80,  fixed: 'left'}
+                , {field: 'videoTitle', title: '标题', width: 100}
+                , {field: 'videoImg', title: '封面',
+                    templet: function(obj){
+                        return '<img alt="图片不存在" width="150" src="'+obj.videoImg+'">';
+                    },
+                    width: 100}
+                , {field: 'forPeople', title: '使用人群', width: 200}
+                , {field: 'kechengfenlei', title: '类型', width: 80}
+                , {field: 'teacherName', title: '讲师名称', width: 100}
+                , {field: 'teacherInfo', title: '讲师简介', width: 200}
+                , {field: 'videoPrice', title: '价格', width: 80}
+                , {field: 'videoTime', title: '发布时间', width: 177}
+
+
+                , {field: 'videoStatus', title: '审核',
+                    templet: function(obj){
+                        if (obj.videoStatus == 0) {return '<font  class="layui-bg-orange"">未审核</font>';}
+                        if (obj.videoStatus == 2) {return '<font class="layui-bg-green">审核通过</font>';}
+                        if (obj.videoStatus == 1) {return '<font class="layui-bg-red">审核未通过</font>';}
+                    },
+                    width: 100}
+                , {field: 'xxx', title: '操作',
+                    templet: function(obj){
+                        if (obj.videoStatus == 0) {return '<button type="button" class="layui-btn layui-btn-sm layui-btn-warm"><a href="javaScript:audit('+obj.id+')">待审核</a></button>';}
+                        if (obj.videoStatus == 2) {return '<button type="button" class="layui-btn layui-btn-sm"><a href="javaScript:tongGuo()">审核通过</a></button>';}
+                        if (obj.videoStatus == 1) {return '<button type="button" class="layui-btn layui-btn-sm layui-btn-danger"><a href="javaScript:audit('+obj.id+')">从新审核</a></button>';}
+                    },
+                    width: 100}
+            ]],
+            /*id: 'testReload',*/
+            skin: 'row', //表格风格
+            even: true, //隔行背景
+            page: true, //是否显示分页
+            limits: [6, 12, 18], //显示
+            limit: 6, //每页默认显示的数量
+            request: {
+                page: 'pageNo', //页码的参数名称，默认：page
+                limit: 'pageSize' //每页数据量的参数名，默认：limit
+            }
+        });
+    });
+    function audit(id) {
+        layer.open({
+            type: 1,
+            skin: 'layui-layer-rim', //加上边框
+            area: ['840px', '480px'], //宽高
+            content: '<div id="div"></div>'
+        });
+        $.ajax({
+            url:'getVideoById',
+            data:{id:id},
+            success:function (data) {
+                var html = '<form class="layui-form" id="form">\n' +
+                    '      <input type="hidden" name="id" value="'+data.id+'" readonly  lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
+                    '      <input type="hidden" name="teacherId" value="'+data.teacherId+'" readonly  lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
+                    '      <input type="hidden" name="videourl" value="'+data.videourl+'" readonly  lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
+                    '  <div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">视频名称</label>\n' +
+                    '    <div class="layui-input-inline">\n' +
+                    '      <input type="text" name="videoName" value="'+data.videoName+'" readonly  lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  </div>\n' +
+                    '  <div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">标题</label>\n' +
+                    '    <div class="layui-input-inline">\n' +
+                    '      <input type="text" name="videoTitle" value="'+data.videoTitle+'" readonly lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  <div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">封面</label>\n' +
+                    '    <div class="layui-input-inline">\n' +
+
+                        '<img alt="图片不存在" onclick="bo(\''+data.videourl+'\')" src="'+data.videoImg+'" width="250">\n'+
+                    '      <input type="hidden" name="videoImg" value="'+data.videoImg+'" readonly lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  <div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">类别</label>\n' +
+                    '    <div class="layui-input-inline">\n' +
+                    '      <input type="text" name="kechengfenlei" value="'+data.kechengfenlei+'" readonly lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  <div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">价格</label>\n' +
+                    '    <div class="layui-input-inline">\n' +
+                    '      <input type="text" name="videoPrice" value="'+data.videoPrice+'" readonly lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+                    '  <div class="layui-form-item">\n' +
+                    '    <label class="layui-form-label">发布时间</label>\n' +
+                    '    <div class="layui-input-inline">\n' +
+                    '      <input type="text" name="videoTime" value="'+data.videoTime+'" readonly lay-verify="readonly"  autocomplete="off" class="layui-input">\n' +
+                    '    </div>\n' +
+
+                    '  <div class="layui-form-item layui-form-text">\n' +
+                    '    <label class="layui-form-label">视频介绍</label>\n' +
+                    '    <div class="layui-input-block">\n' +
+                    '      <textarea name="videoinfo"  placeholder="请输入内容" readonly lay-verify="readonly" class="layui-textarea">'+data.videoinfo+'</textarea>\n' +
+                    '    </div>\n' +
+                    '  </div>\n' +
+                    '  <div class="layui-form-item layui-form-text">\n' +
+                    '    <label class="layui-form-label">适用人群</label>\n' +
+                    '    <div class="layui-input-block">\n' +
+                    '      <textarea name="forPeople"  placeholder="请输入内容" readonly lay-verify="readonly" class="layui-textarea">'+data.forPeople+'</textarea>\n' +
+                    '    </div>\n' +
+                    '  </div>\n' +
+                    '  <div class="layui-form-item layui-form-text">\n' +
+                    '    <label class="layui-form-label">视频阐述</label>\n' +
+                    '    <div class="layui-input-block">\n' +
+                    '      <textarea name="summary"  placeholder="请输入内容" readonly lay-verify="readonly" class="layui-textarea">'+data.summary+'</textarea>\n' +
+                    '    </div>\n' +
+                    '  </div>\n' +
+                    '    <span id="span">' +
+
+                    '</span>\n' +
+                    '    <span id="span1">' +
+                    '  <div class="layui-form-item">\n' +
+                    '    <div  class="layui-input-block">\n' +
+                    '      <center><button type="button" class="layui-btn" onclick="updataStart(2)">通过</button>\n' +
+                    '      <button type="button" class="layui-btn layui-btn-danger" onclick="openText()">拒绝</button></center>\n' +
+
+
+                    '</span>\n' +
+                    '    </div>\n' +
+                    '  </div>\n' +
+                    '</form>';
+                $("#div").html(html);
+            }
+        })
+    }
+
+
+    function openText() {
+
+        var html = '';
+        var but = '';
+
+            html+='  <div class="layui-form-item layui-form-text">\n' +
+                '    <label class="layui-form-label">拒绝原因</label>\n' +
+                '    <div class="layui-input-block">\n' +
+                '      <textarea name="errorMsg"  placeholder="必填" class="layui-textarea"></textarea>\n' +
+                '    </div>\n' +
+                '  </div>\n' ;
+            but +=  '</span>\n' +
+                '  <div class="layui-form-item">\n' +
+                '    <div  class="layui-input-block">\n' +
+                '      <center><button type="button"  class="layui-btn" onclick="updataStart(1)">提交</button></center>\n' +
+                '    </div>\n' +
+                '  </div>\n' ;
+        $("#span1").html("");
+
+        $("#span").html(html);
+        $("#span1").html(but);
+    }
+   /*
+   * 通知 加 修改状态
+   * */
+    function updataStart(start) {
+        layer.msg(start);
+        $.ajax({
+            url:'/updateVideoStart?start='+start,
+            type:'post',
+            data:$("#form").serialize(),
+            success:function (data) {
+
+                layer.closeAll();
+                layer.msg("操作成功");
+                $(".layui-laypage-btn")[0].click();
+                $.ajax({
+                    url:'/sendVideoStart?start='+start,
+                    type:'post',
+                    data:$("#form").serialize(),
+                    success:function (data) {
+
+                        layer.msg("邮件发送成功");
+
+
+                    },
+                    error:function () {
+                        layer.msg("邮件发送失败");
+                    }
+                })
+            },
+            error:function () {
+                layer.msg("操作失败");
+            }
+        })
+
+    }
+    function tongGuo() {
+        layer.msg("审核已经通过");
+    }
+
+    function bo(url) {
+        layer.open({
+            type: 2,
+            title: false,
+            area: ['630px', '360px'],
+            shade: 0.8,
+            maxmin: true,
+            closeBtn: 0,
+            shadeClose: true,
+            content:url
+        });
+    }
+</script>
+<script>
+
+</script>
+</html>

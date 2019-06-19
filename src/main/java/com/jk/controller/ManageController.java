@@ -6,6 +6,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.jk.bean.Inst;
 import com.jk.bean.MenuTree;
 import com.jk.bean.Teacher;
+import com.jk.bean.Video;
 import com.jk.service.ManageService;
 import com.jk.util.ConstanConf;
 import com.jk.util.HttpClientUtil;
@@ -24,8 +25,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 import java.util.HashMap;
 
 import java.util.List;
@@ -177,7 +177,7 @@ public class ManageController {
     }
 
     /**
-     * 审核机构
+     * 审核机构修改状态
      * @param inst
      * @param start
      * @return
@@ -192,7 +192,7 @@ public class ManageController {
     }
 
     /**
-     * 审核机构审核是否通过
+     * 通知审核机构是否通过
      * @param inst
      * @param start
      * @return
@@ -201,6 +201,49 @@ public class ManageController {
     @ResponseBody
     public String sendInstStart(Inst inst, Integer start) {
         manageService.sendInst(inst, start);
+        return null;
+    }
+
+    /**
+     *查询视频 及 讲师
+     * @param page
+     * @param limit
+     * @return
+     */
+    @RequestMapping("getVideo")
+    @ResponseBody
+    public HashMap<String, Object> getVideo(Integer page, Integer limit){
+        HashMap<String, Object> list = manageService.getVideo(page,limit);
+        return list;
+    }
+
+    /**
+     * 审核 视频的详细信息
+     * @param id
+     * @return
+     */
+    @RequestMapping("getVideoById")
+    @ResponseBody
+    public Video getVideoById(Integer id){
+        return manageService.getVideoById(id);
+    }
+
+    /**
+     * 修改视频审核状态
+     * @param video
+     * @param start
+     * @return
+     */
+    @RequestMapping("updateVideoStart")
+    @ResponseBody
+    public String updateVideoStart(Video video,Integer start){
+        manageService.updateVideoStart(video.getId(),start);
+        return null;
+    }
+    @RequestMapping("sendVideoStart")
+    @ResponseBody
+    public String sendVideoStart(Video video, Integer start) {
+        manageService.sendVideoStart(video, start);
         return null;
     }
 

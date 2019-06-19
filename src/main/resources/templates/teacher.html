@@ -159,7 +159,7 @@
             success:function (data) {
                 layer.closeAll();
                 layer.msg("操作成功");
-                parent.location.reload();
+                $(".layui-laypage-btn")[0].click();
 
                 $.ajax({
                     url:'/sendTeacherStart?chec='+start,

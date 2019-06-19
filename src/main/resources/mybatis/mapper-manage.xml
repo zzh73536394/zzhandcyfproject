@@ -41,5 +41,35 @@
             ti.`start`
             limit #{page},#{limit}
     </select>
+    <select id="getVideoAll" resultType="com.jk.bean.Video">
+        SELECT
+            tv.id,
+            tv.videoName,
+            tv.teacherId,
+            tv.videoTitle,
+            tv.videoImg,
+            tv.videoPrice,
+            tv.videoTime,
+            tv.forPeople,
+            tv.kechengfenlei,
+            tv.videoStatus,
+            tt.teacherName,
+            tt.teacherInfo
+        FROM
+            t_video tv
+        LEFT JOIN t_teacher tt ON tv.teacherId = tt.id
+        WHERE
+            tv.teacherId IN (
+                SELECT
+                    tt.id
+                FROM
+                    t_teacher tt
+                WHERE
+                    tt.chec = 2
+            )
+        ORDER BY
+            tv.videoTime DESC
+             limit #{page},#{limit}
+    </select>
 
 </mapper>
