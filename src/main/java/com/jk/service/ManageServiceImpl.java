@@ -1,11 +1,9 @@
 package com.jk.service;
 
 
-import com.jk.bean.Inst;
-import com.jk.bean.MenuTree;
-import com.jk.bean.Teacher;
-import com.jk.bean.Video;
+import com.jk.bean.*;
 import com.jk.dao.ManageMapper;
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -157,6 +155,7 @@ public class ManageServiceImpl implements ManageService{
     @Override
     public void updateVideoStart(Integer id, Integer start) {
         manageMapper.updateVideoStart(id,start);
+        UserBean loginAccount = (UserBean) SecurityUtils.getSubject().getPrincipal();
     }
 
     @Override

@@ -42,7 +42,10 @@ public class ManageController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
-
+    /**
+     * 获取当前登陆的名字
+     * @return
+     */
     @RequestMapping("getUser")
     @ResponseBody
     public UserBean getUser() {

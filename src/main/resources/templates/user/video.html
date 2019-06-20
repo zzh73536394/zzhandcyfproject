@@ -48,6 +48,7 @@
                         if (obj.videoStatus == 0) {return '<font  class="layui-bg-orange"">未审核</font>';}
                         if (obj.videoStatus == 2) {return '<font class="layui-bg-green">审核通过</font>';}
                         if (obj.videoStatus == 1) {return '<font class="layui-bg-red">审核未通过</font>';}
+                        if (obj.videoStatus ==) {return '<font class="layui-bg-green">审核通过</font>';}
                     },
                     width: 90}
                 , {field: 'xxx', title: '操作',
@@ -55,6 +56,7 @@
                         if (obj.videoStatus == 0) {return '<button type="button" class="layui-btn layui-btn-sm layui-btn-warm"><a href="javaScript:audit('+obj.id+')">待审核</a></button>';}
                         if (obj.videoStatus == 2) {return '<button type="button" class="layui-btn layui-btn-sm"><a href="javaScript:tongGuo()">审核通过</a></button>';}
                         if (obj.videoStatus == 1) {return '<button type="button" class="layui-btn layui-btn-sm layui-btn-danger"><a href="javaScript:audit('+obj.id+')">从新审核</a></button>';}
+                        if (obj.videoStatus == 3) {return '<button type="button" class="layui-btn layui-btn-sm"><a href="javaScript:tongGuo()">审核通过</a></button>';}
                     },
                     width: 100}
             ]],
@@ -143,7 +145,7 @@
                     '    <span id="span1">' +
                     '  <div class="layui-form-item">\n' +
                     '    <div  class="layui-input-block">\n' +
-                    '      <center><button type="button" class="layui-btn" onclick="updataStart(2)">通过</button>\n' +
+                    '      <center><button type="button" class="layui-btn" onclick="updataStart(2,'+data.videoPrice+')">通过</button>\n' +
                     '      <button type="button" class="layui-btn layui-btn-danger" onclick="openText()">拒绝</button></center>\n' +
 
 
@@ -182,8 +184,12 @@
    /*
    * 通知 加 修改状态
    * */
-    function updataStart(start) {
-        layer.msg(start);
+    function updataStart(start,price) {
+
+        if (price == null || price == 0) {
+            start=3;
+        }
+
         $.ajax({
             url:'/updateVideoStart?start='+start,
             type:'post',
