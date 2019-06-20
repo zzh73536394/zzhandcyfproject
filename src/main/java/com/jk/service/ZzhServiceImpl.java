@@ -42,11 +42,14 @@ public class ZzhServiceImpl implements ZzhService {
     }
 
     @Override
-    public void addLunbo(Ossbean ossbean) {
+    public HashMap<String, Object> addLunbo(Ossbean ossbean) {
         /*Jedis resource = jedisPool.getResource();
         resource.del("luobo");
         resource.close();*/
         zzhMapper.addLunbo(ossbean);
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("code",0);
+        return map;
     }
 
 

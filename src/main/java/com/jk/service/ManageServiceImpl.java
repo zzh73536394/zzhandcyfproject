@@ -155,7 +155,7 @@ public class ManageServiceImpl implements ManageService{
     @Override
     public void updateVideoStart(Integer id, Integer start) {
         manageMapper.updateVideoStart(id,start);
-        UserBean loginAccount = (UserBean) SecurityUtils.getSubject().getPrincipal();
+        //  UserBean loginAccount = (UserBean) SecurityUtils.getSubject().getPrincipal();
     }
 
     @Override
@@ -164,7 +164,7 @@ public class ManageServiceImpl implements ManageService{
         Teacher teacher = manageMapper.getTeacherById(video.getTeacherId());
 
         String text= "";
-        if (start == 2) {
+        if (start == 2 || start == 3) {
             text +="你好"+teacher.getTeacherName()+",您在网易云课堂提交的"+video.getVideoName()+"视频已通过审核.";
 
             Boolean b = createHtml.saveProduct(video.getId());

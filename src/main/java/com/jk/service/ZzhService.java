@@ -12,7 +12,7 @@ public interface ZzhService {
 
     void deleteBiaoti(String btid);
 
-    void addLunbo(Ossbean ossbean);
+    HashMap<String, Object> addLunbo(Ossbean ossbean);
 
     UserBean findByName(String username);
 

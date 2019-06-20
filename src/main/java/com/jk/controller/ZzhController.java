@@ -6,7 +6,6 @@ import com.jk.bean.kecheng;
 import com.jk.bean.weblog;
 import com.jk.service.ZzhService;
 import com.jk.util.OSSClientUtil;
-import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,7 +30,7 @@ public class ZzhController {
     }
 
     //轮播图查询
-    @annotation.MyLog(value = "轮播图查询")
+    @annotation.MyLog(value = "查看了轮播图")
     @RequestMapping("findoss")
     @ResponseBody
     public HashMap<String, Object> findoss(Integer page, Integer limit) {
@@ -39,12 +38,13 @@ public class ZzhController {
         return findoss;
     }
 
-
+    @annotation.MyLog(value = "删除了一条轮播图")
     @RequestMapping("deleteBiaoti")
     @ResponseBody
     public void deleteBiaoti(String btid) {
         zzhService.deleteBiaoti(btid);
     }
+
 
     @RequestMapping("updaloadImg")
     @ResponseBody
@@ -64,16 +64,18 @@ public class ZzhController {
     @annotation.MyLog(value = "新增轮播图")
     @RequestMapping("adduser")
     @ResponseBody
-    public void adduser(Ossbean ossbean) {
+    public HashMap<String, Object> adduser(Ossbean ossbean) {
         Integer id = ossbean.getId();
+        HashMap<String, Object> map = new HashMap<>();
+
         if (id == null) {
-           zzhService.addLunbo(ossbean);//新增轮播图
+          map = zzhService.addLunbo(ossbean);//新增轮播图
 
         } else {
             zzhService.updateLunbo(ossbean);
 
         }
-
+            return map;
     }
 
     //超级管理员管理用户
@@ -99,7 +101,7 @@ public class ZzhController {
         return findkecheng;
     }
 
-    @annotation.MyLog(value = "修改课程分类")
+    @annotation.MyLog(value = "修改了课程分类")
     @RequestMapping("updatekechengfenlei")
     @ResponseBody
     public void updatekechengfenlei(kecheng kecheng) {

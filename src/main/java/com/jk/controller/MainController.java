@@ -25,7 +25,7 @@ public class MainController {
     @RequestMapping("/toLogin")
     public String toLogin(HttpServletRequest request, HttpServletResponse response){
         //response.setHeader("root", request.getContextPath());
-        return "login";
+        return "demo";
     }
 
     //点击登录后获取的前台信息

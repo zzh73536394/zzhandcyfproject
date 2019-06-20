@@ -69,6 +69,7 @@ public class ShiroConfig {
         filterMap.put("/user/ossguanli", "authc");
         filterMap.put("/druid/**", "anon");
         filterMap.put("/static/**", "anon");
+        filterMap.put("/login/**", "anon");
         filterMap.put("/vip/rizhijilu", "roles[vip]");
         filterMap.put("/**", "authc");
         filterMap.put("/logout", "logout");

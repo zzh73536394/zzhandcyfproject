@@ -3,6 +3,7 @@ package com.jk.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.jk.aop.annotation;
 import com.jk.bean.*;
 import com.jk.service.ManageService;
 import com.jk.util.ConstanConf;
@@ -78,6 +79,7 @@ public class ManageController {
     /**
      * 教师注册审核
      */
+    @annotation.MyLog(value = "查看了审核未通过的教师页面")
     @RequestMapping("getTeacher")
     @ResponseBody
     public HashMap<String, Object> getTeacher(Integer page, Integer limit){
@@ -100,6 +102,7 @@ public class ManageController {
      * @param chec
      * @return
      */
+    @annotation.MyLog(value = "对教师资质审核")
     @RequestMapping("updateTeacherStart")
     @ResponseBody
     public String updateTeacherStart(Teacher teacher,Integer chec) {
@@ -156,6 +159,7 @@ public class ManageController {
      * @param chec
      * @return
      */
+    @annotation.MyLog(value = "向教师邮箱发送审核结果")
     @RequestMapping("sendTeacherStart")
     @ResponseBody
     public String sendTeacherStart(Teacher teacher,Integer chec) {
@@ -169,6 +173,7 @@ public class ManageController {
      * @param limit
      * @return
      */
+    @annotation.MyLog(value = "查看了审核未通过的机构")
     @RequestMapping("getInst")
     @ResponseBody
     public HashMap<String, Object> getInst(Integer page, Integer limit){
@@ -193,7 +198,7 @@ public class ManageController {
      * @param start
      * @return
      */
-
+    @annotation.MyLog(value = "对机构做了审核")
     @RequestMapping("updateInstStart")
     @ResponseBody
     public String updateInstStart(Inst inst, Integer start) {
@@ -208,6 +213,7 @@ public class ManageController {
      * @param start
      * @return
      */
+    @annotation.MyLog(value = "向机构邮箱发送审核结果")
     @RequestMapping("sendInstStart")
     @ResponseBody
     public String sendInstStart(Inst inst, Integer start) {
@@ -221,6 +227,7 @@ public class ManageController {
      * @param limit
      * @return
      */
+    @annotation.MyLog(value = "查看了审核未通过的视频")
     @RequestMapping("getVideo")
     @ResponseBody
     public HashMap<String, Object> getVideo(Integer page, Integer limit){
@@ -233,6 +240,7 @@ public class ManageController {
      * @param id
      * @return
      */
+
     @RequestMapping("getVideoById")
     @ResponseBody
     public Video getVideoById(Integer id){
@@ -245,12 +253,14 @@ public class ManageController {
      * @param start
      * @return
      */
+   // @annotation.MyLog(value = "对视频做了审核")
     @RequestMapping("updateVideoStart")
     @ResponseBody
     public String updateVideoStart(Video video,Integer start){
         manageService.updateVideoStart(video.getId(),start);
         return null;
     }
+   // @annotation.MyLog(value = "向提交视频的教师邮箱发送视频的审核结果")
     @RequestMapping("sendVideoStart")
     @ResponseBody
     public String sendVideoStart(Video video, Integer start) {
