@@ -48,7 +48,7 @@
                         if (obj.videoStatus == 0) {return '<font  class="layui-bg-orange"">未审核</font>';}
                         if (obj.videoStatus == 2) {return '<font class="layui-bg-green">审核通过</font>';}
                         if (obj.videoStatus == 1) {return '<font class="layui-bg-red">审核未通过</font>';}
-                        if (obj.videoStatus ==) {return '<font class="layui-bg-green">审核通过</font>';}
+                        if (obj.videoStatus ==3) {return '<font class="layui-bg-green">审核通过</font>';}
                     },
                     width: 90}
                 , {field: 'xxx', title: '操作',
@@ -80,7 +80,7 @@
             content: '<div id="div"></div>'
         });
         $.ajax({
-            url:'getVideoById',
+            url:'/getVideoById',
             data:{id:id},
             success:function (data) {
                 var html = '<form class="layui-form" id="form">\n' +

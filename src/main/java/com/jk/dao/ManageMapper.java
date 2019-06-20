@@ -17,7 +17,7 @@ public interface ManageMapper {
     List<LinkedHashMap<String, Object>> getTree();
     @Select("select * from t_tree")
     List<MenuTree> getTreeAll();
-    @Select("select count(*) from t_teacher")
+    @Select("select count(*) from t_teacher tt where tt.chec != 2")
     long getTeacher();
 
     List<Teacher> getTeacherAll(@Param("page") Integer page, @Param("limit") Integer limit);
@@ -25,7 +25,7 @@ public interface ManageMapper {
     Teacher getTeacherById(@Param("id") Integer id);
     @Update("update t_teacher set chec = #{chec} where id = #{id}")
     void updateTeachcerStart(@Param("id") Integer id, @Param("chec") Integer chec);
-    @Select("select count(*) from t_institutions")
+    @Select("select count(*) from t_institutions ti where ti.start != 2")
     long getInst();
 
     List<Inst> getInstAll(@Param("page") Integer page,@Param("limit") Integer limit);
@@ -33,7 +33,7 @@ public interface ManageMapper {
     Inst getInstById(@Param("id") Integer id);
     @Update("update t_institutions set start = #{start} where id = #{id}")
     void updateInstStart(@Param("id") Integer id,@Param("start") Integer start);
-    @Select("select COUNT(*) from t_video tv where tv.teacherId in (SELECT tt.id from t_teacher tt where tt.chec = 2)")
+    @Select("select COUNT(*) from t_video tv where (tv.videoStatus = 0 OR tv.videoStatus = 1) and tv.teacherId in (SELECT tt.id from t_teacher tt where tt.chec = 2)")
     long getVideo();
 
     List<Video> getVideoAll(@Param("page") Integer page,@Param("limit") Integer limit);

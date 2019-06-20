@@ -69,7 +69,7 @@
             content: '<div id="div"></div>'
         });
         $.ajax({
-            url:'getTeacherById',
+            url:'/getTeacherById',
             data:{id:id},
             success:function (data) {
                 var html = '<form class="layui-form" id="form">\n' +

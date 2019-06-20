@@ -20,7 +20,8 @@
             tt.chec
         FROM
             t_teacher tt
-        where 1 = 1
+        where
+          tt.chec != 2
         order by tt.chec
         limit #{page},#{limit}
     </select>
@@ -36,7 +37,7 @@
         FROM
             t_institutions ti
         WHERE
-            1 = 1
+            ti.start != 2
         ORDER BY
             ti.`start`
             limit #{page},#{limit}
@@ -59,14 +60,18 @@
             t_video tv
         LEFT JOIN t_teacher tt ON tv.teacherId = tt.id
         WHERE
-            tv.teacherId IN (
-                SELECT
-                    tt.id
-                FROM
-                    t_teacher tt
-                WHERE
-                    tt.chec = 2
+            (
+                tv.videoStatus = 0
+                OR tv.videoStatus = 1
             )
+        AND tv.teacherId IN (
+            SELECT
+                tt.id
+            FROM
+                t_teacher tt
+            WHERE
+                tt.chec = 2
+        )
         ORDER BY
             tv.videoTime DESC
              limit #{page},#{limit}
