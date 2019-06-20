@@ -38,9 +38,27 @@
         </div>
     </form>
 </div>
-<table id="zhuTable"></table>
+<div class="layui-row">
+        <div class="layui-form-item center" >
+            <label class="layui-form-label" style="width: 116px" >课程类型</label>
+            <div class="layui-input-block">
+                <input type="text" id="kechengfenlei1" name="kechengfenlei" required value="" style="width: 240px"  lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+                <button class="layui-btn" data-type="reload" id="anniu" style="margin-left: 350px;margin-top: -56px">立即搜索</button>
+            </div>
+
+        </div>
+
+
+</div>
+<table class="layui-hide" id="zhuTable"></table>
 </body>
 <script th:inline="none">
+    var form='';//定义全局变量
+    layui.use(['form','laydate'],function(){
+        form  = layui.form,
+            laydate = layui.layuidate;
+        form.render();//更新渲染表单
+    });
 
     $(function () {
         init();
@@ -82,16 +100,34 @@
                 }
 
             });
+            var $ = layui.$, active = {
+                reload: function () {
+                    //执行重载
+                    table.reload('testReload', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        , where: {
+                            kechengfenlei:$("#kechengfenlei1").val()
+                        }
+                    });
+                }
+
+            };
+            $('#anniu').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
         });
     }
 
     function log(id,videoName,teacherName,kechengfenlei) {
-        alert("11")
+
         $("#videoName").val(videoName),
             $("#teacherName").val(teacherName),
             $("#id").val(id)
         $("#kechengfenlei").val(kechengfenlei)
-        alert("11")
+
         //页面层-自定义
         layer.open({
             type: 1,

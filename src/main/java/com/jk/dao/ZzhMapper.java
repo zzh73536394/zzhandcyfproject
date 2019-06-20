@@ -3,6 +3,7 @@ package com.jk.dao;
 import com.jk.bean.Ossbean;
 import com.jk.bean.UserBean;
 import com.jk.bean.kecheng;
+import com.jk.bean.weblog;
 import org.apache.ibatis.annotations.*;
 import org.springframework.stereotype.Repository;
 
@@ -40,11 +41,22 @@ public interface ZzhMapper{
     @Update("update t_oss set href=#{href},hrefname=#{hrefname} where id=#{id}")
     void updateLunbo(Ossbean ossbean);
 
-    @Select("select count(*) from t_video")
-    Integer countkecheng();
-
-    List<LinkedHashMap<String,Object>> findkecheng(@Param("start") Integer start,@Param("limit") Integer limit,@Param("kecheng") kecheng kecheng);
 
     @Insert("insert into t_video(kechengfenlei) values(#{kechengfenlei})")
     void updatekechengfenlei(kecheng kecheng);
+
+    @Update("update t_oss set status=#{status} where id=#{id}")
+    void updatelunbostatus(@Param("id") Integer id, @Param("status")Integer status);
+
+    @Insert("insert into t_log (username,operation,method,params,createDate) values(#{username},#{operation},#{method},#{params},#{createDate})")
+    void save(weblog sysLog);
+
+    @Select("select count(*) from t_log")
+    Integer countlog();
+
+    List<LinkedHashMap<String,Object>> findlog(@Param("start") Integer start, @Param("limit") Integer limit,@Param("username") String username);
+
+    Integer countkecheng(@Param("kecheng") String kecheng);
+
+    List<LinkedHashMap<String, Object>> findkecheng(@Param("start")Integer start,@Param("limit") Integer limit,@Param("kecheng") String kecheng);
 }

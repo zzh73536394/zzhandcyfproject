@@ -141,7 +141,14 @@
                             return"<img src='"+d.url+"' width='150px' height='60px'>";
                         }},
                     {field:'xx',title:'操作',templet:function(d){
+                            var status=d.status
+                            if (status == 0) {
+                                status = "显示";
+                            } else {
+                                status = "隐藏";
+                            }
                             return "<a class=\"layui-btn layui-btn-primary layui-btn-mini\" lay-event=\"detail\" href=javascript:deleteLunBo('"+d.id+"')>删除</a> " +
+                                "<a class=\"layui-btn layui-btn-primary layui-btn-mini\" lay-event=\"detail\" href=javascript:updatelunbostatus('"+d.id+"','"+d.status+"')>"+status+"</a> "+
                                 " <a class=\"layui-btn layui-btn-primary layui-btn-mini\" lay-event=\"detail\" href=javascript:updateHref('"+d.href+"','"+d.id+"','"+d.hrefname+"')>修改跳转路径</a>";
                         }},
                 ]],
@@ -221,6 +228,21 @@
             success : function (result) {
                 alert("成功")
                 $(".layui-laypage-btn")[0].click();
+            },error : function () {
+
+            }
+
+        })
+    }
+
+    function updatelunbostatus(id,status) {
+        $.ajax({
+            url:"/max/updatelunbostatus",
+            type:'post',
+            dataType: 'json',
+            data:{id:id,status:status},
+            success : function (data) {
+                init();
             },error : function () {
 
             }

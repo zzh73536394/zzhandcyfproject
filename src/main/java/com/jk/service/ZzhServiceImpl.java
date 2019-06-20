@@ -3,11 +3,10 @@ package com.jk.service;
 import com.jk.bean.Ossbean;
 import com.jk.bean.UserBean;
 import com.jk.bean.kecheng;
+import com.jk.bean.weblog;
 import com.jk.dao.ZzhMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -93,9 +92,9 @@ public class ZzhServiceImpl implements ZzhService {
 
     @Override
     public HashMap<String, Object> findkecheng(Integer page, Integer limit, kecheng kecheng) {
-        Integer countkecheng = zzhMapper.countkecheng();
+        Integer countkecheng = zzhMapper.countkecheng(kecheng.getKechengfenlei());
         Integer start = (page-1)*limit;
-        List<LinkedHashMap<String, Object>> findkecheng = zzhMapper.findkecheng(start, limit, kecheng);
+        List<LinkedHashMap<String, Object>> findkecheng = zzhMapper.findkecheng(start, limit, kecheng.getKechengfenlei());
         HashMap<String, Object> map = new HashMap<>();
         map.put("count",countkecheng);
         map.put("data",findkecheng);
@@ -107,5 +106,36 @@ public class ZzhServiceImpl implements ZzhService {
     @Override
     public void updatekechengfenlei(kecheng kecheng) {
         zzhMapper.updatekechengfenlei(kecheng);
+    }
+
+    @Override
+    public HashMap<String, Object> updatelunbostatus(Integer id, Integer status) {
+        if (status == 0) {
+            status=1;
+            zzhMapper.updatelunbostatus(id, status);
+        } else {
+            status=0;
+            zzhMapper.updatelunbostatus(id, status);
+        }
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("code",0);
+        return map;
+    }
+
+    @Override
+    public void save(weblog sysLog) {
+        zzhMapper.save(sysLog);
+    }
+
+    @Override
+    public HashMap<String, Object> findlog(Integer page, Integer limit, weblog weblog) {
+        Integer countlog = zzhMapper.countlog();
+        Integer start = (page-1)*limit;
+        List<LinkedHashMap<String, Object>> findlog = zzhMapper.findlog(start,limit,weblog.getUsername());
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("count",countlog);
+        map.put("data",findlog);
+        map.put("code",0);
+        return map;
     }
 }

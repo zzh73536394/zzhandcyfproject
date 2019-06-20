@@ -20,9 +20,29 @@ public class UserController {
     /**
      * 会员中心，需认证且角色为vip可访问
      */
-    @RequestMapping("/vip/index")
-    public String update(){
-        return "/vip/index";
+    @RequestMapping("/user/teacher")
+    public String jiaoshizhuce() {
+        return "/user/teacher";
+    }
+
+    @RequestMapping("/user/inst")
+    public String jigouzhuceshenhe() {
+        return "/user/inst";
+    }
+
+    @RequestMapping("/user/video")
+    public String shangchuanshipinshenhe() {
+        return "/user/video";
+    }
+
+    @RequestMapping("/vip/rizhijilu")
+    public String rizhijilu() {
+        return "/vip/rizhijilu";
+    }
+
+    @RequestMapping("/user/kechengfenlei")
+    public String kechengfenlei() {
+        return  "/user/kechengfenlei";
     }
 
     @RequestMapping("/user/ossguanli")
@@ -30,10 +50,19 @@ public class UserController {
         return "/user/ossguanli";
     }
 
-    @RequestMapping("/user/kechengfenlei")
-    public String kechengfenlei() {
-        return  "/user/kechengfenlei";
+    @RequestMapping("/vip/index")
+    public String update(){
+        return "/vip/index";
     }
+
+
+
+
+
+
+
+
+
 
 
 }

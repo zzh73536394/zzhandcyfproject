@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <!-- 引入jquery -->
+    <script type="text/javascript" src="/js2/jquery-1.9.1.min.js"></script>
+    <script src="/js2/layui/layui.js"></script>
+    <link rel="stylesheet" href="/js2/layui/css/layui.css">
+</head>
+<body>
+<div class="layui-row">
+    <div class="layui-form-item center" >
+        <label class="layui-form-label" style="width: 116px" >用户查询</label>
+        <div class="layui-input-block">
+            <input type="text" id="username" name="username" required value="" style="width: 240px"  lay-verify="required" placeholder="请输入" autocomplete="off" class="layui-input">
+            <button class="layui-btn" data-type="reload" id="anniu" style="margin-left: 350px;margin-top: -56px">立即搜索</button>
+        </div>
+
+    </div>
+</div>
+
+<table id="zhuTable"></table>
+</body>
+<script th:inline="none">
+
+    $(function () {
+        init();
+    })
+
+
+
+    function init() {
+        layui.use('table', function () {
+            var table = layui.table;
+            table.render({
+                elem: '#zhuTable',
+                dataType: 'json',
+                url: '/max/findlog',
+                toolbar: '#toolbarDemo',
+                cellMinWidth: 80, //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+                cols: [[
+                    {field: 'id', title: 'ID',width:60, sort: true},
+                    {field: '操作记录', title: '跳转地址',width:1060,templet:function(d){
+                             var method =d.method;
+                             var split = method.split(".");
+                             method=split[split.length-1];
+                            var simfomat = new Date();
+                            simfomat.setTime(d.createDate);   //转换时间
+
+                            return "用户"+"<font style='color: red'>"+d.username+"</font>"+"于"+"<font style='color: red'>"+simfomat.toLocaleString()+"</font>"+"时访问了"+"<font style='color: red'>"+method+"</font>"+"方法进行了"+"<font style='color: red'>"+d.operation+"</font>"+"的操作"
+                        }}
+                ]],
+                id: 'testReload',
+                skin: 'row', //表格风格
+                even: true, //隔行背景
+                page: true, //是否显示分页
+                limits: [5, 10, 15], //显示
+                limit: 10, //每页默认显示的数量
+                request: {
+                    page: 'pageNo', //页码的参数名称，默认：page
+                    limit: 'pageSize' //每页数据量的参数名，默认：limit
+                }
+
+            });
+            var $ = layui.$, active = {
+                reload: function () {
+                    //执行重载
+                    table.reload('testReload', {
+                        page: {
+                            curr: 1 //重新从第 1 页开始
+                        }
+                        , where: {
+
+                            username:$("#username").val()
+                        }
+                    });
+                }
+
+            };
+            $('#anniu').on('click', function(){
+                var type = $(this).data('type');
+                active[type] ? active[type].call(this) : '';
+            });
+        });
+    }
+</script>
+</html>

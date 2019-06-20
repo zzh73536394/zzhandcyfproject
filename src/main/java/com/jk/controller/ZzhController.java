@@ -1,9 +1,12 @@
 package com.jk.controller;
 
+import com.jk.aop.annotation;
 import com.jk.bean.Ossbean;
 import com.jk.bean.kecheng;
+import com.jk.bean.weblog;
 import com.jk.service.ZzhService;
 import com.jk.util.OSSClientUtil;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,8 +16,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 
 @Controller
 @RequestMapping("/max")
@@ -30,12 +31,14 @@ public class ZzhController {
     }
 
     //轮播图查询
+    @annotation.MyLog(value = "轮播图查询")
     @RequestMapping("findoss")
     @ResponseBody
     public HashMap<String, Object> findoss(Integer page, Integer limit) {
         HashMap<String, Object> findoss = zzhService.findoss(page, limit);
         return findoss;
     }
+
 
     @RequestMapping("deleteBiaoti")
     @ResponseBody
@@ -58,6 +61,7 @@ public class ZzhController {
     }
 
     //修改或新增轮播图
+    @annotation.MyLog(value = "新增轮播图")
     @RequestMapping("adduser")
     @ResponseBody
     public void adduser(Ossbean ossbean) {
@@ -73,18 +77,21 @@ public class ZzhController {
     }
 
     //超级管理员管理用户
+    @annotation.MyLog(value = "查看管理员用户")
     @RequestMapping("findyonghu")
     @ResponseBody
     public HashMap<String, Object> findyonghu(Integer page, Integer limit) {
         return zzhService.findyonghu(page,limit);
     }
 
+    @annotation.MyLog(value = "删除管理员")
     @RequestMapping("deleteyonghu")
     @ResponseBody
     public void deleteyonghu(Integer id) {
         zzhService.deleteyonghu(id);
     }
 
+    @annotation.MyLog(value = "查询课程")
     @RequestMapping("findkecheng")
     @ResponseBody
     public HashMap<String, Object> findkecheng(Integer page, Integer limit, kecheng kecheng) {
@@ -92,10 +99,25 @@ public class ZzhController {
         return findkecheng;
     }
 
-
+    @annotation.MyLog(value = "修改课程分类")
     @RequestMapping("updatekechengfenlei")
     @ResponseBody
     public void updatekechengfenlei(kecheng kecheng) {
         zzhService.updatekechengfenlei(kecheng);
+    }
+
+    @annotation.MyLog(value = "显示隐藏轮播图")
+    @RequestMapping("updatelunbostatus")
+    @ResponseBody
+    public HashMap<String, Object> updatelunbostatus(Integer id, Integer status) {
+        HashMap<String, Object> updatelunbostatus = zzhService.updatelunbostatus(id, status);
+        return updatelunbostatus;
+    }
+
+    @RequestMapping("findlog")
+    @ResponseBody
+    public HashMap<String, Object> findlog(Integer page, Integer limit, weblog weblog) {
+        HashMap<String, Object> findlog = zzhService.findlog(page, limit,weblog);
+        return findlog;
     }
 }

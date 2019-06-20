@@ -41,7 +41,24 @@
     </select>
 
     <select id="findkecheng" resultType="java.util.HashMap">
-        select * from t_video tv inner join t_teacher tt on tv.teacherId=tt.id limit #{start},#{limit}
+        select * from t_video tv inner join t_teacher tt on tv.teacherId=tt.id where 1=1
+         <if test="kecheng !=null and kecheng !=''">
+            and kechengfenlei=#{kecheng}
+         </if>
+         limit #{start},#{limit}
     </select>
 
+    <select id="findlog" resultType="java.util.HashMap">
+        select * from t_log where 1=1
+         <if test="username !=null and username !=''">
+             and username=#{username}
+         </if>
+         limit #{start},#{limit}
+    </select>
+     <select id="countkecheng" resultType="int">
+         select count(*) from t_video tv inner join t_teacher tt on tv.teacherId=tt.id where 1=1
+         <if test="kecheng !=null and kecheng !=''">
+             and kechengfenlei=#{kecheng}
+         </if>
+     </select>
 </mapper>

@@ -56,7 +56,7 @@ public class MainController {
             boolean isAuthenticated = subject.isAuthenticated();
             System.out.println("是否认证通过: " + isAuthenticated);
         }
-        return "login";
+        return "demo";
     }
 
     @RequestMapping("/logout")
