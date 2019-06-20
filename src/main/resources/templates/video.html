@@ -28,7 +28,7 @@
             , url: '/getVideo' //数据接口
             , page: true //开启分页
             , cols: [[ //表头
-                {field: 'id', title: 'ID', width: 80,  fixed: 'left'}
+                {field: 'id', title: 'ID', width: 40,  fixed: 'left'}
                 , {field: 'videoTitle', title: '标题', width: 100}
                 , {field: 'videoImg', title: '封面',
                     templet: function(obj){
@@ -37,10 +37,10 @@
                     width: 100}
                 , {field: 'forPeople', title: '使用人群', width: 200}
                 , {field: 'kechengfenlei', title: '类型', width: 80}
-                , {field: 'teacherName', title: '讲师名称', width: 100}
-                , {field: 'teacherInfo', title: '讲师简介', width: 200}
+                , {field: 'teacherName', title: '讲师名称', width: 90}
+                , {field: 'teacherInfo', title: '讲师简介', width: 177}
                 , {field: 'videoPrice', title: '价格', width: 80}
-                , {field: 'videoTime', title: '发布时间', width: 177}
+                , {field: 'videoTime', title: '发布时间', width: 167}
 
 
                 , {field: 'videoStatus', title: '审核',
@@ -49,7 +49,7 @@
                         if (obj.videoStatus == 2) {return '<font class="layui-bg-green">审核通过</font>';}
                         if (obj.videoStatus == 1) {return '<font class="layui-bg-red">审核未通过</font>';}
                     },
-                    width: 100}
+                    width: 90}
                 , {field: 'xxx', title: '操作',
                     templet: function(obj){
                         if (obj.videoStatus == 0) {return '<button type="button" class="layui-btn layui-btn-sm layui-btn-warm"><a href="javaScript:audit('+obj.id+')">待审核</a></button>';}

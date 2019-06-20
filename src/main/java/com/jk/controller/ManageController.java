@@ -3,10 +3,7 @@ package com.jk.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.jk.bean.Inst;
-import com.jk.bean.MenuTree;
-import com.jk.bean.Teacher;
-import com.jk.bean.Video;
+import com.jk.bean.*;
 import com.jk.service.ManageService;
 import com.jk.util.ConstanConf;
 import com.jk.util.HttpClientUtil;
@@ -14,6 +11,7 @@ import com.jk.util.Md5Util;
 import com.jk.util.TreeNoteUtil;
 
 
+import org.apache.shiro.SecurityUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +42,16 @@ public class ManageController {
 
     Logger logger = LoggerFactory.getLogger(this.getClass());
 
+
+    @RequestMapping("getUser")
+    @ResponseBody
+    public UserBean getUser() {
+        UserBean loginAccount = (UserBean) SecurityUtils.getSubject().getPrincipal();
+
+       /* loginAccount.getName();*/
+
+        return loginAccount;
+    }
 
 
     @RequestMapping("toShow")
